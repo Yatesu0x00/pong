@@ -19,30 +19,28 @@ namespace pong
     class Zeiger
     {
         Line li;
-
         public double length { get; set; }
-
         public double angle { get; set; }
-        
-        public Zeiger(double X1 = 660, double Y1 = 100, double _length = 60, double _angle = 0) 
+
+        public Zeiger(double X1 = 660, double Y1 = 100, double _length = 60, double _angle = 0)
         {
             li = new Line();
             length = _length;
             angle = _angle;
             li.X1 = X1;
-            li.Y1 = Y1;                     
+            li.Y1 = Y1;
         }
 
         public void draw(Canvas c)
         {
-            double gk, ak;
+            double gk, ak; //gk -> gegenkathete / ak -> Ankathete
             gk = length * Math.Sin(angle);
             ak = length * Math.Cos(angle);
 
             undraw(c);
             
-            li.X2 = li.X1 + gk; //GK
-            li.Y2 = li.Y1 - ak; //AK
+            li.X2 = li.X1 + gk;
+            li.Y2 = li.Y1 - ak;
             
             li.Stroke = Brushes.Black;
             li.StrokeThickness = 2;

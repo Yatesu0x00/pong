@@ -20,27 +20,30 @@ namespace pong
         Ellipse eli;
         Zeiger secZeiger, minZeiger, stdZeiger;
         DispatcherTimer timer;
+        public int sec, min, h;
         Canvas Cvs;
-        public int sek, min, std;
 
         public Uhr(Canvas _cvs)
         {
             Cvs = _cvs;
 
             eli = new Ellipse();
-            eli.Width = 2 * 40;
-            eli.Height = 2 * 40;
+            eli.Width = 80;
+            eli.Height = 80;
             eli.Stroke = Brushes.Black;
             eli.StrokeThickness = 1.5;
             eli.Fill = Brushes.FloralWhite;
 
-            Canvas.SetLeft(eli, 700 - 40);
+            //Die hälfte der Uhr festlegen deswegen - Radius
+            Canvas.SetLeft(eli, 700 - 40); 
             Canvas.SetTop(eli, 80 - 40);
 
-            sek = 0;
+            //Zeiger Wert auf 0 setzten
+            sec = 0;
             min = 0;
-            std = 0;
-                     
+            h = 0;
+
+            //draw zeiger mit länge -> länge pro Zeiger -15
             secZeiger = new Zeiger(700, 80, 40);
             secZeiger.draw(_cvs);
             minZeiger = new Zeiger(700, 80, 25);
@@ -57,43 +60,47 @@ namespace pong
 
         public void start_Timer()
         {
-            timer.Start(); //Damit er von mainWindow Timer_Click aufrufbar ist
+            timer.Start(); //Damit er von mainWindow Timer_Click aufrufbar ist        
         }
 
         public void timer_Tick(object sender, EventArgs e)
         {
-            sek++;
-            if (sek == 3600)
+            //Umrechnung von sek -> min -> std
+            sec++;
+            if (sec == 3600)
             {
                 min++;
-                sek = 0;
+                sec = 0;
             }
             if (min == 60)
             {
-                std++;
+                h++;
                 min = 0;
             }
 
+            //Winkelberechnung für die jeweiligen Zeiger aufrufen
             secZeiger.angle = getAngle(1);
             secZeiger.draw(Cvs);
             minZeiger.angle = getAngle(2);
             minZeiger.draw(Cvs);
-            stdZeiger.angle = getAngle(0);
+            stdZeiger.angle = getAngle(3);
             stdZeiger.draw(Cvs);
         }
-        private double getAngle(int zustand)
+
+        //Winkelberechnung
+        private double getAngle(int zeiger)
         {
-            if (zustand == 1)
+            if (zeiger == 1)
             {
-                return (2 * Math.PI / 3600) * sek;
+                return (2 * Math.PI / 3600) * sec;
             }
-            else if (zustand == 2)
+            else if (zeiger == 2)
             {
                 return (2 * Math.PI / 60) * min;
             }
             else
             {
-                return (2 * Math.PI / 12) * std;
+                return (2 * Math.PI / 12) * h;
             }
         }
 
@@ -108,14 +115,15 @@ namespace pong
         public void resize(double sx, double sy)
         {
             eli.Width *= (sx + sy) / 2;
-            eli.Height *= (sx + sy) / 2;
+            eli.Height *= (sx + sy) / 2;    
 
             Canvas.SetLeft(eli, sx * Canvas.GetLeft(eli));
             Canvas.SetTop(eli, sy * Canvas.GetTop(eli));
 
-             secZeiger.resize(Canvas.GetLeft(eli) + eli.Width / 2, Canvas.GetTop(eli) + eli.Width / 2, eli.Width / 2, 0);
-             minZeiger.resize(Canvas.GetLeft(eli) + eli.Width / 2, Canvas.GetTop(eli) + eli.Width / 2, eli.Width / 2, 15);
-             stdZeiger.resize(Canvas.GetLeft(eli) + eli.Width / 2, Canvas.GetTop(eli) + eli.Width / 2, eli.Width / 2, 30);
+            //Uhr durch 2 Teilen X und Y und den längen unterschied jeweiligen Zeiger festlegen
+            secZeiger.resize(Canvas.GetLeft(eli) + eli.Width / 2, Canvas.GetTop(eli) + eli.Width / 2, eli.Width / 2, 0);
+            minZeiger.resize(Canvas.GetLeft(eli) + eli.Width / 2, Canvas.GetTop(eli) + eli.Width / 2, eli.Width / 2, 15);
+            stdZeiger.resize(Canvas.GetLeft(eli) + eli.Width / 2, Canvas.GetTop(eli) + eli.Width / 2, eli.Width / 2, 30);
         }
     }
 }

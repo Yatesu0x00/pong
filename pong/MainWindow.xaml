@@ -10,8 +10,8 @@
         <Menu Name="MainMenu" IsMainMenu="True" HorizontalAlignment="Left" Height="21" VerticalAlignment="Top" Width="43" Canvas.Left="10" Canvas.Top="10">
             <MenuItem Header="Menu" Width="43" Focusable="False" Height="21">
                 <MenuItem Name="start" Header="Start" Click="start_Click" />
-                <MenuItem Name="ende" Header="Ende" Click="ende_Click" />
-                <MenuItem Name="newGame" Header="Neues Spiel" Click="newGame_Click" />
+                <MenuItem Name="newGame" Header="Parameter" Click="newGame_Click" />
+                <MenuItem Name="ende" Header="Ende" Click="ende_Click"/>
             </MenuItem>
         </Menu>
         <Rectangle x:Name="RectFeld" Fill="#FFE43F5A" Height="301" Canvas.Left="67" Canvas.Top="34" Width="573"/>

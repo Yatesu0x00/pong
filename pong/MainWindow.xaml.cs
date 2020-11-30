@@ -31,6 +31,7 @@ namespace pong
         public int min { get; set; }
         public int std { get; set; }
         private bool p2CanMove;
+        private double extraSpeed; //KI never lose! cuz of this variable/ extra speed for catching the ball in every shape
         public MainWindow()
         {
             dlg = new StartDlg();
@@ -58,14 +59,16 @@ namespace pong
             ball.Draw(Cvs);
           
             paddle1 = new Paddle(dlg.paddleHoehe, dlg.paddleBreite);
-            paddle1.position(174, 119);           
+            paddle1.position(174, 119);       
             paddle1.draw(Cvs);
             
             paddle2 = new Paddle(dlg.paddleHoehe, dlg.paddleBreite);
             paddle2.position(174, 559);
             paddle2.draw(Cvs);
 
-            uhr = new Uhr(Cvs);         
+            uhr = new Uhr(Cvs);
+
+            extraSpeed = 1.2;
         }
 
         private void timer_Tick(object sender, EventArgs e)
@@ -75,13 +78,10 @@ namespace pong
             ball.Move(ticks - ticks_old, ball.speed);
             ball.Collision(RectFeld, tbCountLeft, tbCountRight);
 
-            sliderBallVelocity.Value = Math.Round(sliderBallVelocity.Value, 1);
-            lbBallVelocity.Content = sliderBallVelocity.Value;
-            
-            fps = 1 / (ticks - ticks_old) * 1000;
-            fps = Math.Round(fps);
-            lbFPS.Content = fps;
+            getFPS(ticks);
 
+            slider();
+            
             //Player 1 - paddle on the left
             if (Keyboard.IsKeyDown(Key.S))
             {
@@ -125,17 +125,30 @@ namespace pong
                 double t = Canvas.GetLeft(paddle2.Rect) - ball.X / ball.Vx;
                 double yt = ball.Y + ball.Vy / t;
 
-                if (yt < Canvas.GetTop(paddle2.Rect) + paddle2.Rect.Height / 2 && Canvas.GetTop(paddle2.Rect) > Canvas.GetTop(RectFeld) + 10)
+                if (yt < Canvas.GetTop(paddle2.Rect) + paddle2.Rect.Height / 2 && Canvas.GetTop(paddle2.Rect) > Canvas.GetTop(RectFeld) + 5)
                 {
-                    paddle2.move(ticks - ticks_old, -dlg.paddleVy * ball.speed);
+                    paddle2.move(ticks - ticks_old, -dlg.paddleVy * ball.speed * extraSpeed);
                 }
-                else if (yt > Canvas.GetTop(paddle2.Rect) + paddle2.Rect.Height / 2 && Canvas.GetTop(paddle2.Rect) + paddle2.Rect.Height < Canvas.GetTop(RectFeld) + RectFeld.Height - 10) 
+                else if (yt > Canvas.GetTop(paddle2.Rect) + paddle2.Rect.Height / 2 && Canvas.GetTop(paddle2.Rect) + paddle2.Rect.Height < Canvas.GetTop(RectFeld) + RectFeld.Height - 5) 
                 {
-                    paddle2.move(ticks - ticks_old, dlg.paddleVy * ball.speed);
+                    paddle2.move(ticks - ticks_old, dlg.paddleVy * ball.speed * extraSpeed);
                 }
             }
 
             ticks_old = ticks;
+        }
+
+        private void getFPS(double _ticks)
+        {
+            fps = 1 / (_ticks - ticks_old) * 1000;
+            fps = Math.Round(fps);
+            lbFPS.Content = fps;
+        }
+
+        private void slider()
+        {
+            sliderBallVelocity.Value = Math.Round(sliderBallVelocity.Value, 1);
+            lbBallVelocity.Content = sliderBallVelocity.Value;
         }
 
         private void start_Click(object sender, RoutedEventArgs e)

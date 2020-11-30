@@ -14,9 +14,6 @@ using System.Windows.Shapes;
 
 namespace pong
 {
-    /// <summary>
-    /// Interaktionslogik für StartDlg.xaml
-    /// </summary>
     public partial class StartDlg : Window
     {
         public Double Radius { get; set; }
@@ -27,8 +24,7 @@ namespace pong
         public Double paddleVy { get; set; }
         public Double p1 { get; set; }
         public Double p2 { get; set; }
-        
-        public bool autoMode { get; set; }
+        public bool autoMode { get; set; } //KI
 
         public StartDlg()
         {
@@ -46,9 +42,10 @@ namespace pong
                 spieler2 = Convert.ToString(tbNameP2.Text + ": Up Arrow=Up | Down Arrow=Down");
                 paddleVy = Convert.ToDouble(tbPaddleVy.Text);
 
-                if (Radius < 1 || Radius > 16)
+                //Parameter abfragen
+                if (Radius < 1 || Radius > 15)
                 {
-                    throw new Exception("Der Radius muss zwischen 1 und 100 liegen!");
+                    throw new Exception("Der Radius muss zwischen 1 und 15 liegen!");
                 }
                 else if(paddleBreite < 15 || paddleBreite > 40)
                 {
@@ -60,7 +57,7 @@ namespace pong
                 }
                 else if(paddleVy < 15 || paddleVy > 25)
                 {
-                    throw new Exception("Die Paddle Geschwindigkeit muss zwischen 50 und 150 liegen!");
+                    throw new Exception("Die Paddle Geschwindigkeit muss zwischen 15 und 25 liegen!");
                 }
                 else
                 {
@@ -78,6 +75,7 @@ namespace pong
             Environment.Exit(0);
         }
 
+        //KI an oder aus
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
             autoMode = true;
