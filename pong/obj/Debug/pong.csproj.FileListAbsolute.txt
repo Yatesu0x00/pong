@@ -1,0 +1,17 @@
+C:\Users\yates\Documents\pong\pong\bin\Debug\pong.exe.config
+C:\Users\yates\Documents\pong\pong\bin\Debug\pong.exe
+C:\Users\yates\Documents\pong\pong\bin\Debug\pong.pdb
+C:\Users\yates\Documents\pong\pong\obj\Debug\pong.csprojAssemblyReference.cache
+C:\Users\yates\Documents\pong\pong\obj\Debug\MainWindow.g.cs
+C:\Users\yates\Documents\pong\pong\obj\Debug\StartDlg.g.cs
+C:\Users\yates\Documents\pong\pong\obj\Debug\App.g.cs
+C:\Users\yates\Documents\pong\pong\obj\Debug\pong_MarkupCompile.cache
+C:\Users\yates\Documents\pong\pong\obj\Debug\pong_MarkupCompile.lref
+C:\Users\yates\Documents\pong\pong\obj\Debug\MainWindow.baml
+C:\Users\yates\Documents\pong\pong\obj\Debug\StartDlg.baml
+C:\Users\yates\Documents\pong\pong\obj\Debug\pong.g.resources
+C:\Users\yates\Documents\pong\pong\obj\Debug\pong.Properties.Resources.resources
+C:\Users\yates\Documents\pong\pong\obj\Debug\pong.csproj.GenerateResource.cache
+C:\Users\yates\Documents\pong\pong\obj\Debug\pong.csproj.CoreCompileInputs.cache
+C:\Users\yates\Documents\pong\pong\obj\Debug\pong.exe
+C:\Users\yates\Documents\pong\pong\obj\Debug\pong.pdb

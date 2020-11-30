@@ -1,0 +1,30 @@
+﻿<Window x:Class="pong.StartDlg"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:pong"
+        mc:Ignorable="d"
+        Title="StartDlg" Height="336.422" Width="411.469" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
+    <Canvas Margin="0,0,0,147">
+        <Label Content="Ball Radius:" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="56" Canvas.Top="109" FontSize="15"/>
+        <TextBox x:Name="radius" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="35" Canvas.Left="141" Canvas.Top="113" Text="10" RenderTransformOrigin="0.414,1.783" FontSize="15" />
+        <Button x:Name="OK" Content="OK" Canvas.Left="43" Canvas.Top="253" Width="90" Click="OK_Click" IsDefault="True" FontSize="15" Height="30"/>
+        <Button x:Name="cancel" Content="CANCEL" Canvas.Left="181" Canvas.Top="253" Width="90" IsCancel="True" FontSize="15" Height="30" Click="cancel_Click"/>
+        <Label Content="(0 &lt; Radius &lt; 16)" Canvas.Left="181" Canvas.Top="109" Width="137" FontSize="15"/>
+        <Label Content="Spieler 1:" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="16" Canvas.Top="22" FontSize="15"/>
+        <Label Content="Spieler 2:" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="16" Canvas.Top="53" FontSize="15"/>
+        <TextBox x:Name="tbNameP1" HorizontalAlignment="Left" Height="26" TextWrapping="Wrap" VerticalAlignment="Top" Width="85" Canvas.Left="91" Canvas.Top="26" Text="Spieler 1" RenderTransformOrigin="0.414,1.783" FontSize="15" />
+        <TextBox x:Name="tbNameP2" HorizontalAlignment="Left" Height="26" TextWrapping="Wrap" VerticalAlignment="Top" Width="85" Canvas.Left="91" Canvas.Top="57" Text="Spieler 2" RenderTransformOrigin="0.414,1.783" FontSize="15" />
+        <Label Content="Paddle Höhe:" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="43" Canvas.Top="149" FontSize="15"/>
+        <TextBox x:Name="tbPaddleHoehe" HorizontalAlignment="Left" Height="20" TextWrapping="Wrap" VerticalAlignment="Top" Width="35" Canvas.Left="141" Canvas.Top="153" Text="100" RenderTransformOrigin="0.414,1.783" FontSize="15" />
+        <Label Content="(49 &lt; Höhe &lt; 151)" Canvas.Left="181" Canvas.Top="149" Width="137" FontSize="15"/>
+        <Label Content="Paddle Breite:" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="41" Canvas.Top="174" FontSize="15"/>
+        <TextBox x:Name="tbPaddleBreite" HorizontalAlignment="Left" Height="22" TextWrapping="Wrap" VerticalAlignment="Top" Width="35" Canvas.Left="141" Canvas.Top="178" Text="25" RenderTransformOrigin="0.414,1.783" FontSize="15" />
+        <Label Content="(14 &lt; Breite &lt; 41)" Canvas.Left="181" Canvas.Top="174" Width="131" FontSize="15"/>
+        <CheckBox Content="Automatischer Paddle" Canvas.Left="181" Canvas.Top="64" FontSize="15" Width="177" IsChecked="True" Checked="CheckBox_Checked" Unchecked="CheckBox_Unchecked"/>
+        <Label Content="Paddle Geschwindigkeit:" HorizontalAlignment="Left" VerticalAlignment="Top" Canvas.Left="41" Canvas.Top="200" FontSize="15"/>
+        <TextBox x:Name="tbPaddleVy" HorizontalAlignment="Left" Height="22" TextWrapping="Wrap" VerticalAlignment="Top" Width="35" Canvas.Left="211" Canvas.Top="204" Text="15" RenderTransformOrigin="0.414,1.783" FontSize="15" />
+        <Label Content="(14 &lt; Breite &lt; 26)" Canvas.Left="251" Canvas.Top="200" Width="131" FontSize="15"/>
+    </Canvas>
+</Window>
