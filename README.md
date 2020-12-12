@@ -1,2 +1,2 @@
 # pong
-School project 2 WPF
+School project WPF
