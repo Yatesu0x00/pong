@@ -30,12 +30,16 @@ namespace pong
         public int sek { get; set; }
         public int min { get; set; }
         public int std { get; set; }
+        
+        private double T_sec;
+        private double T_ms;
+        private double paddleSpeed;
         private bool p2CanMove;
         private double extraSpeed; //KI never lose! cuz of this variable/ extra speed for catching the ball in every shape
         public MainWindow()
         {
             dlg = new StartDlg();
-
+      
             if ((bool)dlg.ShowDialog())
             {
                 InitializeComponent();
@@ -55,19 +59,22 @@ namespace pong
             timer.Tick += new EventHandler(timer_Tick);
             timer.Interval = new TimeSpan(0, 0, 0, 0, 15);
 
-            ball = new Ball(250, 150, 200, 200, dlg.Radius);
+            ball = new Ball(350, 175, 200, 200, dlg.Radius);
             ball.Draw(Cvs);
-          
+            //ball.startPosition(RectFeld);
+
             paddle1 = new Paddle(dlg.paddleHoehe, dlg.paddleBreite);
-            paddle1.position(174, 119);       
+            paddle1.position(144, 119);       
             paddle1.draw(Cvs);
             
             paddle2 = new Paddle(dlg.paddleHoehe, dlg.paddleBreite);
-            paddle2.position(174, 559);
+            paddle2.position(144, 559);
             paddle2.draw(Cvs);
 
-            uhr = new Uhr(Cvs);
-
+            uhr = new Uhr(Cvs, 690, 80);
+            uhr.draw(Cvs);
+   
+            paddleSpeed = 15;
             extraSpeed = 1.2;
         }
 
@@ -76,20 +83,16 @@ namespace pong
             Double ticks = Environment.TickCount;
 
             ball.Move(ticks - ticks_old, ball.speed);
-            ball.Collision(RectFeld, tbCountLeft, tbCountRight);
+            ball.Collision(RectFeld, tbCountLeft, tbCountRight);         
 
-            getFPS(ticks);
-
-            slider();
-            
             //Player 1 - paddle on the left
             if (Keyboard.IsKeyDown(Key.S))
             {
-                paddle1.move(ticks - ticks_old, dlg.paddleVy);
+                paddle1.move(ticks - ticks_old, paddleSpeed);
             }
             else if (Keyboard.IsKeyDown(Key.W))
             {
-                paddle1.move(ticks - ticks_old, -dlg.paddleVy);
+                paddle1.move(ticks - ticks_old, -paddleSpeed);
             }
             
             //Player 2 - paddle on the right
@@ -105,11 +108,11 @@ namespace pong
             {
                 if (Keyboard.IsKeyDown(Key.Down))
                 {
-                    paddle2.move(ticks - ticks_old, dlg.paddleVy);
+                    paddle2.move(ticks - ticks_old, paddleSpeed);
                 }
                 else if (Keyboard.IsKeyDown(Key.Up))
                 {
-                    paddle2.move(ticks - ticks_old, -dlg.paddleVy);
+                    paddle2.move(ticks - ticks_old, -paddleSpeed);
                 }
             }
                     
@@ -118,23 +121,29 @@ namespace pong
 
             paddle1.collision(RectFeld);
             paddle2.collision(RectFeld);
-            
+
+            getFPS(ticks);
+
+            slider();
+
+            SecBerechnung(ticks);
+
             //Automatischer Paddle
-            if(dlg.autoMode == true && ball.Vx > 0)
+            if (dlg.autoMode == true && ball.Vx > 0)
             {
                 double t = Canvas.GetLeft(paddle2.Rect) - ball.X / ball.Vx;
                 double yt = ball.Y + ball.Vy / t;
 
-                if (yt < Canvas.GetTop(paddle2.Rect) + paddle2.Rect.Height / 2 && Canvas.GetTop(paddle2.Rect) > Canvas.GetTop(RectFeld) + 5)
+                if (yt < Canvas.GetTop(paddle2.Rect) + paddle2.Rect.Height / 2 && Canvas.GetTop(paddle2.Rect) > Canvas.GetTop(RectFeld) + 10)
                 {
-                    paddle2.move(ticks - ticks_old, -dlg.paddleVy * ball.speed * extraSpeed);
+                    paddle2.move(ticks - ticks_old, -paddleSpeed * ball.speed * extraSpeed);
                 }
-                else if (yt > Canvas.GetTop(paddle2.Rect) + paddle2.Rect.Height / 2 && Canvas.GetTop(paddle2.Rect) + paddle2.Rect.Height < Canvas.GetTop(RectFeld) + RectFeld.Height - 5) 
+                else if (yt > Canvas.GetTop(paddle2.Rect) + paddle2.Rect.Height / 2 && Canvas.GetTop(paddle2.Rect) + paddle2.Rect.Height < Canvas.GetTop(RectFeld) + RectFeld.Height - 10) 
                 {
-                    paddle2.move(ticks - ticks_old, dlg.paddleVy * ball.speed * extraSpeed);
+                    paddle2.move(ticks - ticks_old, paddleSpeed * ball.speed * extraSpeed);
                 }
             }
-
+            
             ticks_old = ticks;
         }
 
@@ -151,13 +160,22 @@ namespace pong
             lbBallVelocity.Content = sliderBallVelocity.Value;
         }
 
+        private void SecBerechnung(double _ticks)
+        {
+            T_sec += (_ticks - ticks_old);
+            if(T_sec >= 1000)
+            {
+                T_ms++;
+                uhr.updateUhr(T_ms);
+                T_sec = 0;
+            }
+        }
+
         private void start_Click(object sender, RoutedEventArgs e)
         {
             ticks_old = Environment.TickCount;
 
             timer.Start();
-
-            uhr.start_Timer();
         }
 
         private void ende_Click(object sender, RoutedEventArgs e)
@@ -165,16 +183,18 @@ namespace pong
             Close();
         }
 
-        private void newGame_Click(object sender, RoutedEventArgs e)
-        {
-            MainWindow mw = new MainWindow();
-            mw.Show();
-            Close();
-        }
-
         private void BtnApplyBallVelocity_Click(object sender, RoutedEventArgs e)
         {
             ball.speed = sliderBallVelocity.Value;
+        }
+
+        //Parameter
+        private void neuesSpiel_Click(object sender, RoutedEventArgs e)
+        {
+            Hide();
+            MainWindow mw = new MainWindow();
+            mw.Show();
+            Close();
         }
 
         private void Cvs_SizeChanged(object sender, SizeChangedEventArgs e)

@@ -19,88 +19,50 @@ namespace pong
     {
         Ellipse eli;
         Zeiger secZeiger, minZeiger, stdZeiger;
-        DispatcherTimer timer;
-        public int sec, min, h;
-        Canvas Cvs;
+        public Double X, Y;
 
-        public Uhr(Canvas _cvs)
+        public Uhr(Canvas _cvs, double X = 80, double Y = 80, double radius = 40)
         {
-            Cvs = _cvs;
+            this.X = X; //breite
+            this.Y = Y; //höhe
 
             eli = new Ellipse();
-            eli.Width = 80;
-            eli.Height = 80;
-            eli.Stroke = Brushes.Black;
+            eli.Width = 2 * radius;
+            eli.Height = 2 * radius;
+
             eli.StrokeThickness = 1.5;
+
             eli.Fill = Brushes.FloralWhite;
 
-            //Die hälfte der Uhr festlegen deswegen - Radius
-            Canvas.SetLeft(eli, 700 - 40); 
-            Canvas.SetTop(eli, 80 - 40);
+            Canvas.SetLeft(eli, X - radius);
+            Canvas.SetTop(eli, Y - radius);
 
-            //Zeiger Wert auf 0 setzten
-            sec = 0;
-            min = 0;
-            h = 0;
-
-            //draw zeiger mit länge -> länge pro Zeiger -15
-            secZeiger = new Zeiger(700, 80, 40);
+            secZeiger = new Zeiger(eli, 0);
             secZeiger.draw(_cvs);
-            minZeiger = new Zeiger(700, 80, 25);
+            minZeiger = new Zeiger(eli, 5);
             minZeiger.draw(_cvs);
-            stdZeiger = new Zeiger(700, 80, 10);
-            stdZeiger.draw(_cvs);
-
-            Cvs.Children.Add(eli); //draw
-
-            timer = new DispatcherTimer();
-            timer.Tick += new EventHandler(timer_Tick);
-            timer.Interval = new TimeSpan(0, 0, 0, 0, 1);
+            stdZeiger = new Zeiger(eli, 10);
+            stdZeiger.draw(_cvs);          
         }
 
-        public void start_Timer()
-        {
-            timer.Start(); //Damit er von mainWindow Timer_Click aufrufbar ist        
+        //Winkeländerung pro Sekunde
+        public void updateUhr(double T_sec)
+        {            
+            secZeiger.angle = Math.PI * T_sec / 30;
+            secZeiger.updateZeiger();
+
+            minZeiger.angle = Math.PI * T_sec / 1800;
+            minZeiger.updateZeiger();
+
+            stdZeiger.angle = Math.PI * T_sec / 21600;
+            stdZeiger.updateZeiger();
         }
 
-        public void timer_Tick(object sender, EventArgs e)
-        {
-            //Umrechnung von sek -> min -> std
-            sec++;
-            if (sec == 3600)
+        public void draw(Canvas c)
+        {            
+            if (!c.Children.Contains(eli))
             {
-                min++;
-                sec = 0;
-            }
-            if (min == 60)
-            {
-                h++;
-                min = 0;
-            }
-
-            //Winkelberechnung für die jeweiligen Zeiger aufrufen
-            secZeiger.angle = getAngle(1);
-            secZeiger.draw(Cvs);
-            minZeiger.angle = getAngle(2);
-            minZeiger.draw(Cvs);
-            stdZeiger.angle = getAngle(3);
-            stdZeiger.draw(Cvs);
-        }
-
-        //Winkelberechnung
-        private double getAngle(int zeiger)
-        {
-            if (zeiger == 1)
-            {
-                return (2 * Math.PI / 3600) * sec;
-            }
-            else if (zeiger == 2)
-            {
-                return (2 * Math.PI / 60) * min;
-            }
-            else
-            {
-                return (2 * Math.PI / 12) * h;
+                c.Children.Add(eli);
             }
         }
 

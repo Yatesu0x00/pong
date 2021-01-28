@@ -22,29 +22,34 @@ namespace pong
         public double length { get; set; }
         public double angle { get; set; }
 
-        public Zeiger(double X1 = 660, double Y1 = 100, double _length = 60, double _angle = 0)
+        public Zeiger(Ellipse eli, int _length)
         {
+            angle = 0; //standard position von Zeiger
+
             li = new Line();
-            length = _length;
-            angle = _angle;
-            li.X1 = X1;
-            li.Y1 = Y1;
+
+            li.Stroke = Brushes.Black;
+            li.StrokeThickness = 2;
+
+            li.X1 = Canvas.GetLeft(eli) + eli.Width / 2;
+            li.Y1 = Canvas.GetTop(eli) + eli.Height / 2;
+
+            this.length = eli.Width / 2 - _length;
+            li.X2 = li.X1;
+            li.Y2 = li.Y1 - this.length;
+
+            Panel.SetZIndex(li, 1); //Zeigerfarbe über die Uhrfarbe
+        }
+
+        //Position der Zeigerspitze
+        public void updateZeiger()
+        {
+            li.X2 = li.X1 + length * Math.Sin(angle);
+            li.Y2 = li.Y1 - length * Math.Cos(angle);
         }
 
         public void draw(Canvas c)
         {
-            double gk, ak; //gk -> gegenkathete / ak -> Ankathete
-            gk = length * Math.Sin(angle);
-            ak = length * Math.Cos(angle);
-
-            undraw(c);
-            
-            li.X2 = li.X1 + gk;
-            li.Y2 = li.Y1 - ak;
-            
-            li.Stroke = Brushes.Black;
-            li.StrokeThickness = 2;
-
             if (!c.Children.Contains(li))
             {
                 c.Children.Add(li);
@@ -60,7 +65,7 @@ namespace pong
         }
 
         public void resize(double sx, double sy, double _length, double zeigerLengthNew)
-        {         
+        {
             length = _length - zeigerLengthNew;
             li.X1 = sx;
             li.Y1 = sy;
